@@ -29,11 +29,7 @@ if (!global.mongooseCache) {
 // This should be set in your Next.js env config (e.g. .env.local).
 const MONGODB_URI: string | undefined = process.env.MONGODB_URI;
 
-if (!MONGODB_URI) {
-  throw new Error(
-    "Please define the MONGODB_URI environment variable in your environment configuration."
-  );
-}
+
 
 /**
  * Establishes (or reuses) a single Mongoose connection.
@@ -50,6 +46,12 @@ export async function connectToDatabase(): Promise<Mongoose> {
 
   // If a connection is already being established, reuse the in-flight promise.
   if (!globalCache.promise) {
+    if (!MONGODB_URI) {
+        throw new Error(
+                "Please define the MONGODB_URI environment variable in your environment configuration."
+        );
+    }
+        
     globalCache.promise = mongoose.connect(MONGODB_URI, {
       // Add any Mongoose connection options you need here.
       // keepAlive helps keep connections open in serverless environments.
