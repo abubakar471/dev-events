@@ -1,4 +1,4 @@
-import { Schema, model, type Document, type Model, type Types } from 'mongoose';
+import mongoose, { Schema, model, type Document, type Model, type Types } from 'mongoose';
 import { Event } from './event.model';
 
 // Shape of data required to create a Booking.
@@ -61,4 +61,4 @@ bookingSchema.pre<BookingDocument>('save', async function preSave(next) {
   }
 });
 
-export const Booking = model<BookingDocument, BookingModel>('Booking', bookingSchema);
+export const Booking = (mongoose.models.Booking as BookingModel) || model<BookingDocument, BookingModel>('Booking', bookingSchema);
