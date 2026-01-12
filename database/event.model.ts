@@ -64,11 +64,17 @@ eventSchema.index({ slug: 1 }, { unique: true });
 
 // Generate URL-friendly slug from event title.
 function generateSlug(title: string): string {
-  return title
+  const slug = title
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
+
+  if (!slug) {
+    throw new Error('Unable to generate slug from title; title must contain letters or numbers');
+  }
+
+  return slug;
 }
 
 // Normalize and validate date string to ISO-8601.
