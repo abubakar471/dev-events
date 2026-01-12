@@ -49,10 +49,13 @@ bookingSchema.index({ eventId: 1 });
 // Pre-save hook: ensure referenced Event exists.
 bookingSchema.pre<BookingDocument>('save', async function preSave(next) {
   try {
-    // Verify that the referenced Event exists before saving the booking.
-    const eventExists = await Event.exists({ _id: this.eventId });
-    if (!eventExists) {
-      throw new Error('Invalid eventId: referenced Event does not exist');
+    // Verify that the referenced Event exists before saving the booking,
+    // but only if the document is new or the eventId has been modified.
+    if (this.isNew || this.isModified('eventId')) {
+      const eventExists = await Event.exists({ _id: this.eventId });
+      if (!eventExists) {
+        throw new Error('Invalid eventId: referenced Event does not exist');
+      }
     }
 
     next();
