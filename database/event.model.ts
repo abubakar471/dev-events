@@ -138,9 +138,13 @@ eventSchema.pre<EventDocument>('save', function preSave(next) {
       this.slug = generateSlug(this.title);
     }
 
-    // Normalize and validate date/time for consistent storage.
-    this.date = normalizeDateToISO(this.date);
-    this.time = normalizeTimeTo24h(this.time);
+    // Normalize and validate date/time for consistent storage, but only when modified.
+    if (this.isModified('date')) {
+      this.date = normalizeDateToISO(this.date);
+    }
+    if (this.isModified('time')) {
+      this.time = normalizeTimeTo24h(this.time);
+    }
 
     next();
   } catch (err) {
