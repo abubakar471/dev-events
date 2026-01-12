@@ -46,18 +46,9 @@ const bookingSchema = new Schema<BookingDocument, BookingModel>(
 // Explicit index on eventId to support common query patterns.
 bookingSchema.index({ eventId: 1 });
 
-// Pre-save hook: validate email format and ensure referenced Event exists.
+// Pre-save hook: ensure referenced Event exists.
 bookingSchema.pre<BookingDocument>('save', async function preSave(next) {
   try {
-    if (!this.email || !this.email.trim()) {
-      throw new Error('Email is required');
-    }
-
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(this.email)) {
-      throw new Error('Invalid email address');
-    }
-
     // Verify that the referenced Event exists before saving the booking.
     const eventExists = await Event.exists({ _id: this.eventId });
     if (!eventExists) {
