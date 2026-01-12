@@ -86,7 +86,7 @@ Create a strongly typed Mongoose schema and model called **Booking** with the fo
 
 ✅ **Final Deliverable:**
 
-- Exactly three files: 'event.model.ts', 'booking.model.ts'', and 'index.ts''.
+- Exactly three files: 'event.model.ts', 'booking.model.ts', and 'index.ts'.
 - 
 - Each model must use **pre-save hooks** for slug generation, date normalization, and reference validation.
 - Code should be **production-grade**, **clean**, **type-safe88, and **clear to understand**.
